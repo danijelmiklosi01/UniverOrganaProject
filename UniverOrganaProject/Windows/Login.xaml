@@ -3,10 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UniverOrganaProject"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1280" Width="720">
+        Title="Prijava" Height="720" Width="1280"
+        WindowStyle="None" AllowsTransparency="True">
     <Grid>
-        
+        <!-- Rectangle 1 -->
+        <Rectangle Width="1280" Height="720" Fill="#2CBF55" />
+        <!-- Rectangle 2 -->
+        <Rectangle Width="1200" Height="640" Fill="#FFFFFF" RadiusX="15" RadiusY="15"
+                   Margin="40,40,40,40" />
+        <!-- username -->
+        <TextBox Width="232" Height="56" Margin="524,266,524,398" materialDesign:HintAssist.Hint="Korisničko ime" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+        <!-- password -->
+        <PasswordBox Width="232" Height="56" Margin="524,346,524,318" materialDesign:HintAssist.Hint="Šifra" Style="{StaticResource MaterialDesignOutlinedPasswordBox}"/>
+        <!-- univer 1 -->
+        <Rectangle Width="516" Margin="382,102,382,514">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Res/univer.png" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <!-- Zaboravljena lozinka? -->
+        <TextBlock Height="19" FontFamily="Inter" FontWeight="Light" FontSize="13"
+                   LineHeight="16" Foreground="#2CBF55" Margin="581,491,580,210"
+                   Text="Zaboravljena lozinka?" />
+        <!-- log in -->
+        <Button Width="165" Height="48" Content="Prijavi se" Margin="558,428,557,244" />
+
+        <!-- Vector -->
+        <Rectangle Width="15" Height="2" Margin="120,540,0,0" />
+        <!-- Vector -->
+        <Rectangle Width="15" Height="15" Margin="120,560,0,0" />
+
+        <!-- Minimize button -->
+        <Button Width="40" Click="MinimizeWindow" Margin="1182,4,58,684" Content="-" FontSize="18" />
+
+        <!-- Close button -->
+        <Button Width="40" Click="CloseWindow" Margin="1235,4,5,684" Content="X" FontSize="12" />
     </Grid>
 </Window>
+
