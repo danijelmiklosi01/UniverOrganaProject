@@ -8,6 +8,8 @@
         mc:Ignorable="d"
         Title="Prijava" Height="720" Width="1280"
         WindowStyle="None" AllowsTransparency="True">
+
+
     <Grid>
         <!-- Rectangle 1 -->
         <Rectangle Width="1280" Height="720" Fill="#2CBF55" />
@@ -15,9 +17,9 @@
         <Rectangle Width="1200" Height="640" Fill="#FFFFFF" RadiusX="15" RadiusY="15"
                    Margin="40,40,40,40" />
         <!-- username -->
-        <TextBox Name="txtUsername" KeyDown="Txt_KeyDown" Width="232" Height="56" Margin="524,266,524,398" materialDesign:HintAssist.Hint="Korisničko ime"  Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+        <TextBox Name="txtUsername" KeyDown="Txt_KeyDown" PreviewTextInput="TxtUsername_PreviewTextInput" Width="232" Height="56" Margin="524,266,524,398" materialDesign:HintAssist.Hint="Korisničko ime"  Style="{StaticResource MaterialDesignOutlinedTextBox}" />
         <!-- password -->
-        <PasswordBox Name="txtPassword" KeyDown="Txt_KeyDown" Width="232" Height="56" Margin="524,346,524,318" materialDesign:HintAssist.Hint="Šifra" Style="{StaticResource MaterialDesignOutlinedPasswordBox}"/>
+        <PasswordBox Name="txtPassword" KeyDown="Txt_KeyDown" PreviewTextInput="TxtPassword_PreviewTextInput" Width="232" Height="56" Margin="524,346,524,318" materialDesign:HintAssist.Hint="Šifra" Style="{StaticResource MaterialDesignOutlinedPasswordBox}"/>
         <!-- univer 1 -->
         <Rectangle Width="516" Margin="382,102,382,514">
             <Rectangle.Fill>
@@ -26,10 +28,15 @@
         </Rectangle>
         <!-- Zaboravljena lozinka? -->
         <TextBlock Height="19" FontFamily="Inter" FontWeight="Light" FontSize="13"
-                   LineHeight="16" Foreground="#2CBF55" Margin="581,491,580,210"
-                   Text="Zaboravljena lozinka?" />
+           LineHeight="16" Foreground="#2CBF55" Margin="580,495,580,206"
+           Text="Zaboravljena lozinka?" MouseDown="TextBlock_MouseDown" />
+
         <!-- log in -->
-        <Button Width="165" Height="48" Content="Prijavi se" Margin="558,428,557,244" Click="BtnLogin"/>
+        <Button Width="165" Height="48" Content="Prijavi se" Margin="558,442,557,230" Click="BtnLogin"/>
+
+        <!-- Error label -->
+
+        <Label x:Name="lblError" Content="" Foreground="Red" FontSize="10" FontWeight="Light" Margin="524,407,524,283" />
 
         <!-- Vector -->
         <Rectangle Width="15" Height="2" Margin="120,540,0,0" />
@@ -37,10 +44,14 @@
         <Rectangle Width="15" Height="15" Margin="120,560,0,0" />
 
         <!-- Minimize button -->
-        <Button Width="40" Click="MinimizeWindow" Margin="1182,4,58,684" Content="-" FontSize="18" />
+        <Button Foreground="Black" Click="MinimizeWindow" Margin="1185,0,48,688" FontSize="18" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="WindowMinimize" HorizontalAlignment="Center" />
+        </Button>
 
         <!-- Close button -->
-        <Button Width="40" Click="CloseWindow" Margin="1235,4,5,684" Content="X" FontSize="12" />
+        <Button Foreground="Black" Click="CloseWindow" Margin="1232,0,0,688" FontSize="12" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="Close" />
+        </Button>
     </Grid>
 </Window>
 
