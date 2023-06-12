@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UniverOrganaProject.Windows;
+using Path = System.IO.Path;
 
 namespace UniverOrganaProject
 {
@@ -23,6 +27,9 @@ namespace UniverOrganaProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool isDragging = false;
+        private Point startPoint;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -89,7 +96,7 @@ namespace UniverOrganaProject
             }
             else
             {
-                lblError.Content = string.Empty; // Reset error message
+                lblError.Content = string.Empty;
             }
         }
 
@@ -103,7 +110,7 @@ namespace UniverOrganaProject
             }
             else
             {
-                lblError.Content = string.Empty; // Reset error message
+                lblError.Content = string.Empty;
             }
         }
 
@@ -111,37 +118,147 @@ namespace UniverOrganaProject
         {
             if (e.Key == Key.Enter)
             {
-                e.Handled = true; // Stop further typing after pressing the Enter key
-                                  // Check which element has focus when the Enter key is pressed
+                e.Handled = true;
                 if (sender == txtUsername)
                 {
-                    txtPassword.Focus(); // Move focus to the password input field
+                    txtPassword.Focus();
                 }
                 else if (sender == txtPassword)
                 {
-                    BtnLogin(sender, e); // Perform login if the focus is on the password input field
+                    BtnLogin(sender, e);
                 }
             }
         }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var email = "danijelmiklosi2001@gmail.com";
-            var subject = "Zahtev za promenu lozinke";
-            var body = $"Korisnik: {txtUsername.Text}{Environment.NewLine}Zahteva promenu lozinke.";
+            string connectionString = @"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True";
+            string email;
 
-            var mailtoUri = new Uri($"mailto:{email}?subject={subject}&body={body}");
-
-            try
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
             {
-                Process.Start(new ProcessStartInfo(mailtoUri.AbsoluteUri));
+                try
+                {
+                    if (sqlCon.State == System.Data.ConnectionState.Closed)
+                        sqlCon.Open();
+
+                    string query = "SELECT Email FROM tblUser WHERE Username=@Username";
+                    SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                    sqlCmd.Parameters.AddWithValue("@Username", txtUsername.Text);
+
+                    using (SqlDataReader reader = sqlCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            email = reader["Email"].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Korisničko ime nije pronađeno.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Došlo je do greške prilikom izvršavanja upita: " + ex.Message, "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
-            catch (Exception ex)
+
+            // Generisanje nove lozinke
+            string newPassword = GenerateNewPassword();
+
+            // Ažuriranje lozinke u bazi podataka
+            if (!UpdatePasswordInDatabase(txtUsername.Text, newPassword))
             {
-                MessageBox.Show("Nije moguće otvoriti email klijent.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Došlo je do greške prilikom ažuriranja lozinke.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Slanje e-pošte s novom lozinkom
+            if (!SendEmail(email, newPassword))
+            {
+                MessageBox.Show("Došlo je do greške prilikom slanja e-pošte.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            MessageBox.Show("Nova lozinka je poslata na vašu e-adresu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private string GenerateNewPassword()
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            string newPassword = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return newPassword;
+        }
+
+        private bool UpdatePasswordInDatabase(string username, string newPassword)
+        {
+            string connectionString = @"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True";
+
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    if (sqlCon.State == System.Data.ConnectionState.Closed)
+                        sqlCon.Open();
+
+                    string query = "UPDATE tblUser SET Password=@Password WHERE Username=@Username";
+                    SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                    sqlCmd.Parameters.AddWithValue("@Password", newPassword);
+                    sqlCmd.Parameters.AddWithValue("@Username", username);
+                    int rowsAffected = sqlCmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Došlo je do greške prilikom ažuriranja lozinke u bazi podataka: " + ex.Message, "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
             }
         }
 
+        private bool SendEmail(string recipientEmail, string newPassword)
+        {
+            try
+            {
+                string senderEmail = "smtpdanijel@gmail.com";
+                string senderPassword = "leisiujlmpkdacbe";
+
+                using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    client.EnableSsl = true;
+                    client.Timeout = 10000;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new System.Net.NetworkCredential(senderEmail, senderPassword);
+
+                    MailMessage mail = new MailMessage(senderEmail, recipientEmail);
+                    mail.Subject = "Promena lozinke";
+                    mail.Body = $"Vaša nova lozinka je: {newPassword}";
+
+                    client.Send(mail);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Došlo je do greške prilikom slanja e-pošte: " + ex.Message, "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -150,6 +267,42 @@ namespace UniverOrganaProject
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+        private void btnHelp(object sender, RoutedEventArgs e)
+        {
+            string helpFilePath = "Res/loginHelp/loginHelp.html";
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = assembly.GetManifestResourceNames()
+                .FirstOrDefault(x => x.EndsWith(helpFilePath.Replace('/', '.')));
+
+            if (resourceName != null)
+            {
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        string htmlContent = reader.ReadToEnd();
+                        try
+                        {
+                            // Kreiranje privremene HTML datoteke
+                            string tempHtmlFilePath = Path.Combine(Path.GetTempPath(), "loginHelp.html");
+                            File.WriteAllText(tempHtmlFilePath, htmlContent);
+
+
+                            // Otvaranje privremene HTML datoteke u podrazumevanom web pregledaču
+                            Process.Start(tempHtmlFilePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Došlo je do greške prilikom otvaranja HTML sadržaja: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nije moguće pronaći resurs '" + helpFilePath + "'.");
+            }
         }
     }
 }

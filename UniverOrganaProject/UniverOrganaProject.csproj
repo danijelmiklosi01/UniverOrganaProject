@@ -120,9 +120,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Res\loginHelp\images\Aspose.Words.d0effa52-2c1f-4f3b-9dbd-0f85fc3ade5c.001.png" />
+    <EmbeddedResource Include="Res\loginHelp\loginHelp.html" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Res\univer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modeli\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets')" />
