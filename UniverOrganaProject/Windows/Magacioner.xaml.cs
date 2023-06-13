@@ -30,6 +30,9 @@ namespace UniverOrganaProject.Windows
     {
         private ObservableCollection<Artikli> listaArtikala;
         private string korisnickoIme;
+        private Stack<ObservableCollection<Artikli>> undoStack;
+        private Stack<ObservableCollection<Artikli>> redoStack;
+
 
 
         public ObservableCollection<Artikli> ListaArtikala
@@ -51,7 +54,8 @@ namespace UniverOrganaProject.Windows
             this.korisnickoIme = korisnickoIme;
             DataContext = this;
             LoadDataFromDatabase();
-
+            undoStack = new Stack<ObservableCollection<Artikli>>();
+            redoStack = new Stack<ObservableCollection<Artikli>>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -138,11 +142,62 @@ namespace UniverOrganaProject.Windows
                 MessageBox.Show("Nije moguće pronaći resurs '" + helpFilePath + "'.");
             }
         }
+        private void Undo()
+        {
+            if (undoStack.Count > 0)
+            {
+                redoStack.Push(new ObservableCollection<Artikli>(ListaArtikala));
+                ListaArtikala = undoStack.Pop();
+                OnPropertyChanged(nameof(ListaArtikala));
+
+                UpdateDatabaseWithArtikli(ListaArtikala);
+            }
+        }
+
+        private void Redo()
+        {
+            if (redoStack.Count > 0)
+            {
+                undoStack.Push(new ObservableCollection<Artikli>(ListaArtikala));
+                ListaArtikala = redoStack.Pop();
+                OnPropertyChanged(nameof(ListaArtikala));
+
+                UpdateDatabaseWithArtikli(ListaArtikala);
+            }
+        }
+
+        private void UpdateDatabaseWithArtikli(ObservableCollection<Artikli> artikli)
+        {
+            using (SqlConnection connection = new SqlConnection(@"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True"))
+            {
+                connection.Open();
+
+                
+                SqlCommand deleteCommand = new SqlCommand("DELETE FROM tblArtikli", connection);
+                deleteCommand.ExecuteNonQuery();
+
+                
+                foreach (Artikli artikal in artikli)
+                {
+                    SqlCommand insertCommand = new SqlCommand("INSERT INTO tblArtikli (nazivArtikla, rokTrajanja, Kolicina) VALUES (@nazivArtikla, @rokTrajanja, @kolicina)", connection);
+                    insertCommand.Parameters.AddWithValue("@nazivArtikla", artikal.NazivArtikla);
+                    insertCommand.Parameters.AddWithValue("@rokTrajanja", artikal.RokTrajanja);
+                    insertCommand.Parameters.AddWithValue("@kolicina", artikal.Kolicina);
+
+                    insertCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
         private void btnUndo(object sender, RoutedEventArgs e)
-        { 
+        {
+            Undo();
+            lstArtikli.ItemsSource = ListaArtikala;
         }
         private void btnRedo(object sender, RoutedEventArgs e)
         {
+            Redo();
+            lstArtikli.ItemsSource = ListaArtikala;
         }
         private void btnDodaj(object sender, RoutedEventArgs e)
         {
@@ -208,31 +263,6 @@ namespace UniverOrganaProject.Windows
             return korisnik;
         }
 
-        private Zaposleni DohvatiSifruZaposlenog(string korisnickoIme)
-        {
-            Zaposleni korisnik = new Zaposleni();
-
-            using (SqlConnection connection = new SqlConnection(@"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True"))
-            {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand("SELECT Password FROM tblUser WHERE Username = @korisnickoIme", connection);
-                command.Parameters.AddWithValue("@korisnickoIme", korisnickoIme);
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        string sifra = reader.GetString(0);
-
-                        korisnik.Password = sifra;
-                    }
-                }
-            }
-                return korisnik;
-
-        }
-
             private void PromeniSifru_Click(object sender, RoutedEventArgs e)
             {
                 PromeniSifru.IsOpen = true;
@@ -290,6 +320,8 @@ namespace UniverOrganaProject.Windows
         }
         private void BtnDodajPopup_Click(object sender, RoutedEventArgs e)
         {
+            undoStack.Push(new ObservableCollection<Artikli>(ListaArtikala));
+            redoStack.Clear();
             string nazivArtikla = txtNazivArtiklaPopup.Text;
             DateTime? rokTrajanja = datePickerRokTrajanjaPopup.SelectedDate;
             string kolicinaText = txtKolicinaPopup.Text;
@@ -324,6 +356,7 @@ namespace UniverOrganaProject.Windows
             txtNazivArtiklaPopup.Text = string.Empty;
             datePickerRokTrajanjaPopup.SelectedDate = null;
             txtKolicinaPopup.Text = string.Empty;
+            OnPropertyChanged(nameof(ListaArtikala));
         }
 
         private void AddArtikalToDatabase(Artikli artikal)
@@ -353,6 +386,8 @@ namespace UniverOrganaProject.Windows
 
         private void BtnOduzmiPopup_Click(object sender, RoutedEventArgs e)
         {
+            undoStack.Push(new ObservableCollection<Artikli>(ListaArtikala));
+            redoStack.Clear();
             if (cmbArtikli.SelectedItem is Artikli selectedArtikal)
             {
                 if (int.TryParse(txtKolicina.Text, out int kolicina))
@@ -376,6 +411,7 @@ namespace UniverOrganaProject.Windows
 
             
             popupOduzmiArtikal.IsOpen = false;
+            OnPropertyChanged(nameof(ListaArtikala));
         }
 
         private void BtnOtkaziOduzmi_Click(object sender, RoutedEventArgs e)
