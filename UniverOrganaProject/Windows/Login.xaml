@@ -37,10 +37,6 @@
 
         <Label x:Name="lblError" Content="" Foreground="Red" FontSize="10" FontWeight="Light" Margin="524,407,524,283" />
 
-        <Rectangle Width="15" Height="2" Margin="120,540,0,0" />
-
-        <Rectangle Width="15" Height="15" Margin="120,560,0,0" />
-
 
         <Button Foreground="Black" Click="MinimizeWindow" Margin="1185,0,48,688" FontSize="18" Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Kind="WindowMinimize" HorizontalAlignment="Center" />

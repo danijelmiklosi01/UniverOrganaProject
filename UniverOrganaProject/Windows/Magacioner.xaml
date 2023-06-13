@@ -3,10 +3,156 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UniverOrganaProject.Windows"
         mc:Ignorable="d"
-        Title="Magacioner" Height="450" Width="800">
+        Title="Magacioner" Height="720" Width="1280"
+        WindowStyle="None" AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Rectangle Width="1280" Height="720" Fill="#2CBF55" />
+
+        <Rectangle Width="1200" Height="640" Fill="#FFFFFF" RadiusX="15" RadiusY="15"
+                   Margin="40,40,40,40" />
+
+        <Rectangle Width="1200" Fill="#EDEDED" RadiusX="15" RadiusY="15"
+                   Margin="40,40,40,588" />
+
+        <Button Width="50" Height="50" Margin="70,605,1160,65" Click="btnHelp">
+            <Grid>
+                <materialDesign:PackIcon Kind="PersonHelp" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+        <TextBox Name="txtSearch" TextChanged="TxtSearch_TextChanged" Margin="542,137,542,528" materialDesign:HintAssist.Hint="Unesi naziv artikla"  Style="{StaticResource MaterialDesignOutlinedTextBox}">
+        </TextBox>
+
+        <ListView x:Name="lstArtikli" ItemsSource="{Binding ListaArtikala}" Margin="70,192,72,120">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Left" Content="Naziv artikla" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NazivArtikla}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Right" Content="Rok trajanja" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RokTrajanja, StringFormat=\{0:dd.MM.yyyy\}}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Right" Content="Količina" Width="130" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Kolicina}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Rectangle Margin="542,0,542,681">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Res/univer.png" />
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Button Foreground="Black" Click="MinimizeWindow" Margin="1185,0,48,688" FontSize="18" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="WindowMinimize" HorizontalAlignment="Center" />
+        </Button>
+
+        <Button Foreground="Black" Click="CloseWindow" Margin="1232,0,0,688" FontSize="12" Style="{StaticResource MaterialDesignFlatButton}">
+            <materialDesign:PackIcon Kind="Close" />
+        </Button>
+
+        <Button Width="50" Height="50" Margin="70,61,1160,609" Click="btnUser">
+            <Button.Background>
+                <ImageBrush ImageSource="/Res/download (1).png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+        <Button Width="50" Height="50" Margin="134,61,1096,609" Click="btnUndo">
+            <Grid>
+                <materialDesign:PackIcon Kind="Undo" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+
+        <Button Width="50" Height="50" Margin="199,61,1031,609" Click="btnRedo">
+            <Grid>
+                <materialDesign:PackIcon Kind="Redo" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+
+        <Label FontSize="20" FontFamily="IBM Plex Sans" FontWeight="Medium" Margin="589,70,591,618">MAGACIN</Label>
+
+        <Button Width="50" Height="50" Margin="974,61,256,609" Click="btnList">
+            <Grid>
+                <materialDesign:PackIcon Kind="ListBox" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+
+        <Button Width="50" Height="50" Margin="1035,61,195,609" Click="btnDodaj">
+            <Grid>
+                <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+
+        <Button Width="50" Height="50" Margin="1096,61,134,609" Click="btnOduzmi">
+            <Grid>
+                <materialDesign:PackIcon Kind="Minus" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+
+        <Button Width="50" Height="50" Margin="1158,61,72,609" Click="btnStampaj">
+            <Grid>
+                <materialDesign:PackIcon Kind="Printer" Width="20" Height="20"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Button>
+        <Popup x:Name="popupDodajArtikal" StaysOpen="False" Placement="Center" Width="300" Height="320">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Naziv artikla:"/>
+                    <TextBox x:Name="txtNazivArtiklaPopup"/>
+                    <TextBlock Margin="0,20,0,0" Text="Rok trajanja:"/>
+                    <DatePicker x:Name="datePickerRokTrajanjaPopup"/>
+                    <TextBlock Margin="0,20,0,0" Text="Količina:"/>
+                    <TextBox x:Name="txtKolicinaPopup"/>
+                    <Button Margin="0,20,0,0" Content="Dodaj" Click="BtnDodajPopup_Click"/>
+                    <Button Margin="0,20,0,0" Content="Otkaži" Click="BtnOtkaziPopup_Click" Background="Red"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="popupOduzmiArtikal" PlacementTarget="{Binding ElementName=btnOduzmi}" Placement="Center" StaysOpen="False">
+            <Grid>
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Odaberi artikal za brisanje:" FontWeight="Bold" Margin="0 0 0 10" />
+                        <ComboBox x:Name="cmbArtikli" Width="200" Height="30" ItemsSource="{Binding ListaArtikala}" DisplayMemberPath="NazivArtikla" SelectedValuePath="NazivArtikla" SelectedIndex="0" Margin="0 0 0 10" />
+                        <Label Margin="0,20,0,0" Content="Rok trajanja: " />
+                        <TextBlock Text="{Binding SelectedItem.RokTrajanja, ElementName=cmbArtikli, StringFormat=\{0:dd.MM.yyyy\}}" Margin="0 0 0 10" />
+                        <Label Margin="0,20,0,0" Content="Količina: " />
+                        <TextBox x:Name="txtKolicina" Width="100" Height="30" Margin="0 0 0 10" />
+                        <Button Margin="0,20,0,0" Content="Oduzmi" Width="80" Height="30" Click="BtnOduzmiPopup_Click" />
+                        <Button Margin="0,20,0,0" Content="Otkazi" Width="80" Height="30" Click="BtnOtkaziOduzmi_Click" Background="Red" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Popup>
+
+
     </Grid>
 </Window>

@@ -27,8 +27,8 @@ namespace UniverOrganaProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool isDragging = false;
-        private Point startPoint;
+        
+        
 
         public MainWindow()
         {
