@@ -76,6 +76,25 @@
             <Button.Background>
                 <ImageBrush ImageSource="/Res/download (1).png" Stretch="Fill" />
             </Button.Background>
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Ime i prezime" IsEnabled="False"/>
+                    <MenuItem IsEnabled="False">
+                        <MenuItem.Header>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Name" />
+                                        <Binding Path="Surename" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </MenuItem.Header>
+                    </MenuItem>
+
+                    <MenuItem Header="Promeni šifru" Click="PromeniSifru_Click"/>
+                </ContextMenu>
+            </Button.ContextMenu>
         </Button>
 
         <Button Width="50" Height="50" Margin="134,61,1096,609" Click="btnUndo">
@@ -153,6 +172,18 @@
             </Grid>
         </Popup>
 
+        <Popup x:Name="PromeniSifru" StaysOpen="False" Placement="Center" Width="300" Height="320">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Nova šifra:"/>
+                    <PasswordBox x:Name="txtNovaŠifraPopup"/>
+                    <TextBlock Text="Potvrdi novu šifru:"/>
+                    <PasswordBox x:Name="txtPotvrdaNovaŠifraPopup"/>
+                    <Button Margin="0,20,0,0" Content="Potvrdi" Click="BtnPotvrdi_Click"/>
+                    <Button Margin="0,20,0,0" Content="Otkaži" Click="BtnOtkazi_Click" Background="Red"/>
+                </StackPanel>
+            </Border>
+        </Popup>
 
     </Grid>
 </Window>

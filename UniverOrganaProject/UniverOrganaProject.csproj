@@ -79,6 +79,9 @@
     <Compile Include="Windows\Magacioner.xaml.cs">
       <DependentUpon>Magacioner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MagacionerNarudzbe.xaml.cs">
+      <DependentUpon>MagacionerNarudzbe.xaml</DependentUpon>
+    </Compile>
     <Page Include="Windows\Kuvar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +99,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\Magacioner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MagacionerNarudzbe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

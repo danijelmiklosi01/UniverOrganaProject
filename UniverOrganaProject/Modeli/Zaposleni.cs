@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace UniverOrganaProject.Modeli
 {
 
-        public class User
+        public class Zaposleni
         {
             public int UserID { get; set; }
             public int RoleID { get; set; }
             public string Name { get; set; }
-            public string Surname { get; set; }
+            public string Surename { get; set; }
             public string Username { get; set; }
             public string Password { get; set; }
             public string Email { get; set; }
-        }
+    }
 }

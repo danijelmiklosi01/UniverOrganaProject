@@ -56,7 +56,7 @@ namespace UniverOrganaProject
 
                     if (roleId == 1)
                     {
-                        Magacioner magacionerWindow = new Magacioner();
+                        Magacioner magacionerWindow = new Magacioner(txtUsername.Text);
                         magacionerWindow.Show();
                     }
                     else if (roleId == 2)

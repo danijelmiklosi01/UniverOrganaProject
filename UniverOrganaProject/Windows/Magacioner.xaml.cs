@@ -29,6 +29,8 @@ namespace UniverOrganaProject.Windows
     public partial class Magacioner : Window, INotifyPropertyChanged
     {
         private ObservableCollection<Artikli> listaArtikala;
+        private string korisnickoIme;
+
 
         public ObservableCollection<Artikli> ListaArtikala
         {
@@ -43,11 +45,13 @@ namespace UniverOrganaProject.Windows
             }
         }
 
-        public Magacioner()
+        public Magacioner(string korisnickoIme)
         {
             InitializeComponent();
+            this.korisnickoIme = korisnickoIme;
             DataContext = this;
             LoadDataFromDatabase();
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -168,13 +172,117 @@ namespace UniverOrganaProject.Windows
 
         private void btnList(object sender, RoutedEventArgs e)
         {
+            MagacionerNarudzbe magacionerNarudzbe = new MagacionerNarudzbe(korisnickoIme);
+            magacionerNarudzbe.Show();
+            Close();
         }
+
 
         private void btnUser(object sender, RoutedEventArgs e)
         {
+            ContextMenu contextMenu = ((Button)sender).ContextMenu;
+            Zaposleni korisnik = DohvatiInformacijeOKorisniku(korisnickoIme);
+            contextMenu.DataContext = korisnik;
+            contextMenu.IsOpen = true;
+        }
+        private Zaposleni DohvatiInformacijeOKorisniku(string korisnickoIme)
+        {
+            Zaposleni korisnik = new Zaposleni();
+
+            using (SqlConnection connection = new SqlConnection(@"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True"))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT Name, Surename FROM tblUser WHERE Username = @korisnickoIme", connection);
+                command.Parameters.AddWithValue("@korisnickoIme", korisnickoIme);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    korisnik.Name = reader["Name"].ToString();
+                    korisnik.Surename = reader["Surename"].ToString();
+                }
+            }
+
+            return korisnik;
         }
 
-        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private Zaposleni DohvatiSifruZaposlenog(string korisnickoIme)
+        {
+            Zaposleni korisnik = new Zaposleni();
+
+            using (SqlConnection connection = new SqlConnection(@"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True"))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT Password FROM tblUser WHERE Username = @korisnickoIme", connection);
+                command.Parameters.AddWithValue("@korisnickoIme", korisnickoIme);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        string sifra = reader.GetString(0);
+
+                        korisnik.Password = sifra;
+                    }
+                }
+            }
+                return korisnik;
+
+        }
+
+            private void PromeniSifru_Click(object sender, RoutedEventArgs e)
+            {
+                PromeniSifru.IsOpen = true;
+            }
+
+            private void BtnPotvrdi_Click(object sender, RoutedEventArgs e)
+            {
+            string novaSifra = new System.Net.NetworkCredential(string.Empty, txtNovaŠifraPopup.SecurePassword).Password;
+            string potvrdaSifre = new System.Net.NetworkCredential(string.Empty, txtPotvrdaNovaŠifraPopup.SecurePassword).Password;
+
+            if (novaSifra != potvrdaSifre)
+                {
+                    MessageBox.Show("Nova šifra i potvrda šifre se ne podudaraju.");
+                    return;
+                }
+
+                if (PromeniSifruUBazi(novaSifra))
+                {
+                    MessageBox.Show("Šifra uspešno promenjena.");
+                }
+                else
+                {
+                    MessageBox.Show("Došlo je do greške prilikom promene šifre.");
+                }
+
+                PromeniSifru.IsOpen = false;
+            }
+
+            private void BtnOtkazi_Click(object sender, RoutedEventArgs e)
+            {
+                PromeniSifru.IsOpen = false;
+            }
+
+            private bool PromeniSifruUBazi(string novaSifra)
+            {
+                using (SqlConnection connection = new SqlConnection(@"Data Source=DANIJEL; Initial Catalog=UniverOrgana; Integrated Security=True"))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("UPDATE tblUser SET Password = @novaSifra WHERE Username = @korisnickoIme", connection);
+                    command.Parameters.AddWithValue("@novaSifra", novaSifra);
+                    command.Parameters.AddWithValue("@korisnickoIme", korisnickoIme);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        
+            private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchTerm = txtSearch.Text;
             List<Artikli> filteredArtikli = ListaArtikala.Where(a => a.NazivArtikla.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
