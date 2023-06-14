@@ -34,7 +34,7 @@
                         <GridViewColumnHeader HorizontalAlignment="Left" Content="Naziv artikla" />
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding NazivArtikla}" />
+                                <TextBlock Margin="35,0,0,0" Text="{Binding NazivArtikla}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -42,7 +42,7 @@
                         <GridViewColumnHeader HorizontalAlignment="Right" Content="Rok trajanja" />
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RokTrajanja, StringFormat=\{0:dd.MM.yyyy\}}" HorizontalAlignment="Right" />
+                                <TextBlock Margin="25,0,0,0" Text="{Binding RokTrajanja, StringFormat=\{0:dd.MM.yyyy\}}" HorizontalAlignment="Right" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -50,7 +50,7 @@
                         <GridViewColumnHeader HorizontalAlignment="Right" Content="Količina" Width="130" />
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Kolicina}" HorizontalAlignment="Right" />
+                                <TextBlock Margin="35,0,0,0" Text="{Binding Kolicina}" HorizontalAlignment="Right" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -73,9 +73,7 @@
         </Button>
 
         <Button Width="50" Height="50" Margin="70,61,1160,609" Click="btnUser">
-            <Button.Background>
-                <ImageBrush ImageSource="/Res/download (1).png" Stretch="Fill" />
-            </Button.Background>
+            <materialDesign:PackIcon Kind="Account" />
             <Button.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Ime i prezime" IsEnabled="False"/>

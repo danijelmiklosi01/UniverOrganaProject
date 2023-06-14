@@ -61,7 +61,7 @@ namespace UniverOrganaProject
                     }
                     else if (roleId == 2)
                     {
-                        Kuvar kuvarWindow = new Kuvar();
+                        Kuvar kuvarWindow = new Kuvar(txtUsername.Text);
                         kuvarWindow.Show();
                     }
                     else

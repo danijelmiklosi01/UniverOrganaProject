@@ -288,7 +288,9 @@ namespace UniverOrganaProject.Windows
                     MessageBox.Show("Došlo je do greške prilikom promene šifre.");
                 }
 
+
                 PromeniSifru.IsOpen = false;
+                Close();
             }
 
             private void BtnOtkazi_Click(object sender, RoutedEventArgs e)

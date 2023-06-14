@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="UniverOrganaProject.Windows.KuvarMagacin"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UniverOrganaProject.Windows"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid>
+
+        <TextBox Name="txtSearch" TextChanged="TxtSearch_TextChanged" Margin="500,162,500,502" materialDesign:HintAssist.Hint="Unesi naziv artikla" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+
+        <ListView x:Name="lstArtikli" ItemsSource="{Binding ListaArtikala}" Margin="59,255,59,50">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Left" Content="Naziv artikla" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="35,0,0,0" Text="{Binding NazivArtikla}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Right" Content="Rok trajanja" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="25,0,0,0" Text="{Binding RokTrajanja, StringFormat=\{0:dd.MM.yyyy\}}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Right" Content="Količina" Width="130" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="35,0,0,0" Text="{Binding Kolicina}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <Button Margin="1111,614,73,66" Click="btnNaruci" FontFamily="IBM Plex Sans" FontWeight="Medium">PORUČI
+        </Button>
+
+        <Popup x:Name="popupNaruciArtikal" PlacementTarget="{Binding ElementName=btnNaruci}" Placement="Center" StaysOpen="False">
+            <Grid>
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Odaberi artikal za poručivanje:" FontWeight="Bold" Margin="0 0 0 10" />
+                        <ComboBox x:Name="cmbArtikli" Width="200" Height="30" ItemsSource="{Binding ListaArtikala}" DisplayMemberPath="NazivArtikla" SelectedValuePath="NazivArtikla" SelectedIndex="0" Margin="0 0 0 10" />
+                        <Label Margin="0,20,0,0" Content="Rok trajanja: " />
+                        <TextBlock Text="{Binding SelectedItem.RokTrajanja, ElementName=cmbArtikli, StringFormat=\{0:dd.MM.yyyy\}}" Margin="0 0 0 10" />
+                        <Label Margin="0,20,0,0" Content="Količina: " />
+                        <TextBox x:Name="txtKolicina" Width="100" Height="30" Margin="0 0 0 10" />
+                        <Button Margin="0,20,0,0" Content="Poruči" Width="80" Height="30" Click="BtnNaruciPopup_Click" />
+                        <Button Margin="0,20,0,0" Content="Otkazi" Width="80" Height="30" Click="BtnOtkaziNaruci_Click" Background="Red" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Popup>
+
+    </Grid>
+</UserControl>

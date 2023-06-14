@@ -57,7 +57,39 @@
             </Grid>
         </Button>
 
-
+        <ListView x:Name="lstArtikli" ItemsSource="{Binding ListaArtikala}" Margin="70,192,72,120">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Left" Content="Naziv artikla" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="35,0,0,0" Text="{Binding NazivArtikla}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Right" Content="Količina" Width="130" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="35,0,0,0" Text="{Binding Kolicina}" HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader HorizontalAlignment="Right" Content="" Width="130" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="Potvrdi" Width="80" Height="24" Margin="550,0,0,0" Click="Potvrdi_Click" />
+                                    <Button Content="Otkaži" Background="Red" Width="80" Height="24" Margin="30,0,0,0" Click="Otkazi_Click" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Window>

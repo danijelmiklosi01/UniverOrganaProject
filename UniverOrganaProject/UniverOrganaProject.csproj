@@ -76,6 +76,15 @@
     <Compile Include="Windows\Kuvar.xaml.cs">
       <DependentUpon>Kuvar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\KuvarMagacin.xaml.cs">
+      <DependentUpon>KuvarMagacin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\KuvarMeni.xaml.cs">
+      <DependentUpon>KuvarMeni.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\KuvarRecepti.xaml.cs">
+      <DependentUpon>KuvarRecepti.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Magacioner.xaml.cs">
       <DependentUpon>Magacioner.xaml</DependentUpon>
     </Compile>
@@ -83,6 +92,18 @@
       <DependentUpon>MagacionerNarudzbe.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\Kuvar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\KuvarMagacin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\KuvarMeni.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\KuvarRecepti.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
