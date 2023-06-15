@@ -27,6 +27,8 @@
             <materialDesign:PackIcon Kind="WindowMinimize" HorizontalAlignment="Center" />
         </Button>
 
+        <Label FontSize="20" FontFamily="IBM Plex Sans" FontWeight="Medium" Margin="594,70,594,618">KUHINJA</Label>
+
         <Button Foreground="Black" Click="CloseWindow" Margin="1232,0,0,688" FontSize="12" Style="{StaticResource MaterialDesignFlatButton}">
             <materialDesign:PackIcon Kind="Close" />
         </Button>
