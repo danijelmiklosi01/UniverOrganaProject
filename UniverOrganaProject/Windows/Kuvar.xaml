@@ -55,8 +55,7 @@
             <materialDesign:PackIcon Kind="Account" />
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Ime i prezime" IsEnabled="False"/>
-                    <MenuItem IsEnabled="False">
+                    <MenuItem  IsEnabled="False">
                         <MenuItem.Header>
                             <TextBlock>
                                 <TextBlock.Text>

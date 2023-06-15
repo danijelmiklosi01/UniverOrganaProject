@@ -8,6 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
-        <Rectangle Width="1280" Height="720" Fill="Blue" />
+        <Border Background="#2CBF55" Margin="344,174,344,66" CornerRadius="10">
+            <StackPanel >
+                <Image Source="/Res/pngwing.com.png" Width="416" Height="238" Margin="0,0,70,0"/>
+                <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum rhoncus posuere lectus, id luctus quam iaculis non. Praesent eleifend eros nec eros lacinia volutpat. Integer convallis suscipit velit, vitae iaculis sem pulvinar efficitur. Nam id quam mollis, ultricies risus quis, vehicula lectus. Curabitur blandit non mauris quis elementum. Sed vel ornare lacus. Aliquam sit amet magna lacinia, pulvinar dui quis, scelerisque eros. Phasellus orci neque, imperdiet vel ante ut, tincidunt eleifend leo." TextWrapping="Wrap" FontFamily="Lato" FontWeight="ExtraLight" Foreground="White" Height="92" Width="504" />
+                <Button Margin="200,60,200,0" Foreground="White">Otvori</Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

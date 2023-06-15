@@ -24,5 +24,6 @@ namespace UniverOrganaProject.Windows
         {
             InitializeComponent();
         }
+
     }
 }

@@ -165,6 +165,11 @@
   <ItemGroup>
     <Resource Include="Res\download %281%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\pngegg.png" />
+    <Resource Include="Res\pngwing.com %285%29.png" />
+    <Resource Include="Res\pngwing.com.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -8,6 +8,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
-        <Rectangle Width="1280" Height="720" Fill="Yellow" />
+        <Border Background="#2CBF55" Margin="63,166,864,74" CornerRadius="10">
+            <StackPanel >
+                <Image Source="/Res/pngwing.com.png" Width="220" Height="238"  HorizontalAlignment="Center" Margin="0,0,70,0"/>
+                <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum rhoncus posuere lectus, id luctus quam iaculis non. Praesent eleifend eros nec eros lacinia volutpat. Integer convallis suscipit velit, vitae iaculis sem pulvinar efficitur. Nam id quam mollis, ultricies risus quis, vehicula lectus. Curabitur blandit non mauris quis elementum. Sed vel ornare lacus. Aliquam sit amet magna lacinia, pulvinar dui quis, scelerisque eros. Phasellus orci neque, imperdiet vel ante ut, tincidunt eleifend leo." HorizontalAlignment="Center" TextWrapping="Wrap" FontFamily="Lato" FontWeight="ExtraLight" Foreground="White" Height="223" Width="330" />
+            </StackPanel>
+        </Border>
+        <Border Background="#2CBF55" Margin="464,166,464,74" CornerRadius="10">
+            <StackPanel >
+                <Image Source="/Res/pngegg.png" Width="220" Height="238"  HorizontalAlignment="Center"/>
+                <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum rhoncus posuere lectus, id luctus quam iaculis non. Praesent eleifend eros nec eros lacinia volutpat. Integer convallis suscipit velit, vitae iaculis sem pulvinar efficitur. Nam id quam mollis, ultricies risus quis, vehicula lectus. Curabitur blandit non mauris quis elementum. Sed vel ornare lacus. Aliquam sit amet magna lacinia, pulvinar dui quis, scelerisque eros. Phasellus orci neque, imperdiet vel ante ut, tincidunt eleifend leo." HorizontalAlignment="Center" TextWrapping="Wrap" FontFamily="Lato" FontWeight="ExtraLight" Foreground="White" Height="223" Width="330" />
+            </StackPanel>
+        </Border>
+        <Border Background="#2CBF55" Margin="865,166,63,74" CornerRadius="10">
+            <StackPanel >
+                <Image Source="/Res/pngwing.com (5).png" Width="220" Height="238"  HorizontalAlignment="Center"/>
+                <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum rhoncus posuere lectus, id luctus quam iaculis non. Praesent eleifend eros nec eros lacinia volutpat. Integer convallis suscipit velit, vitae iaculis sem pulvinar efficitur. Nam id quam mollis, ultricies risus quis, vehicula lectus. Curabitur blandit non mauris quis elementum. Sed vel ornare lacus. Aliquam sit amet magna lacinia, pulvinar dui quis, scelerisque eros. Phasellus orci neque, imperdiet vel ante ut, tincidunt eleifend leo." HorizontalAlignment="Center" TextWrapping="Wrap" FontFamily="Lato" FontWeight="ExtraLight" Foreground="White" Height="223" Width="330" />
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
