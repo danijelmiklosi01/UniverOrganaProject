@@ -170,6 +170,18 @@
     <Resource Include="Res\pngwing.com %285%29.png" />
     <Resource Include="Res\pngwing.com.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\kuhinja\kuhinja1\images\Aspose.Words.e0b035bc-f111-4075-ad84-0a3dbd69d051.001.png" />
+    <EmbeddedResource Include="Res\kuhinja\kuhinja1\kuhinja1.html" />
+    <Resource Include="Res\kuhinja\Kuhinja2\images\Aspose.Words.1dc7dbfa-7632-4239-87b2-4357734f6b33.001.png" />
+    <EmbeddedResource Include="Res\kuhinja\Kuhinja2\Kuhinja2.html" />
+    <Resource Include="Res\kuhinja\Kuhinja3\images\Aspose.Words.876e73c2-7a5f-4c7e-8909-ef1a485b64af.001.png" />
+    <EmbeddedResource Include="Res\kuhinja\Kuhinja3\Kuhinja3.html" />
+    <Resource Include="Res\magacin\magacin1\images\Aspose.Words.b72e94e0-a7bd-43a5-99a9-edee5912c7b3.001.png" />
+    <EmbeddedResource Include="Res\magacin\magacin1\magacin.html" />
+    <Resource Include="Res\magacin\magacin2\images\Aspose.Words.cbd592ff-1d1a-49f2-aa7c-43d74e6f8f56.001.png" />
+    <EmbeddedResource Include="Res\magacin\magacin2\magacin2.html" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -108,7 +108,7 @@ namespace UniverOrganaProject.Windows
         }
         private void btnHelp(object sender, RoutedEventArgs e)
         {
-            string helpFilePath = "Res/magacionerHelp/magacionerHelp.html";
+            string helpFilePath = "Res/magacin/magacin1/magacin.html";
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = assembly.GetManifestResourceNames()
                 .FirstOrDefault(x => x.EndsWith(helpFilePath.Replace('/', '.')));
@@ -123,7 +123,7 @@ namespace UniverOrganaProject.Windows
                         try
                         {
                             // Kreiranje privremene HTML datoteke
-                            string tempHtmlFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "loginHelp.html");
+                            string tempHtmlFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "magacin.html");
                             File.WriteAllText(tempHtmlFilePath, htmlContent);
 
 
